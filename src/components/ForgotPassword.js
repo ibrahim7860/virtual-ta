@@ -31,10 +31,10 @@ function ForgotPassword() {
                         />
                     </div>
                     <div className="input-group">
-                        <button type="submit">Reset Password</button>
+                        <button type="submit">RESET PASSWORD</button>
                     </div>
                 </form>
-                <a href="/" className="login-page">Back to login</a>
+                <a href="/sign-in" className="login-page">Back to login</a>
                 <a href="/create-account" className="create-account">Don't have an account?</a>
             </div>
             <img src={homepage} alt="homepage" className="homepage-image" />

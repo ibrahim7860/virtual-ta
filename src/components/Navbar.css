@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 3em;
+    color: #333;
+    margin: 0;
+}
+
+.navbar-links {
+    display: flex;
+}
+
+.nav-link {
+    text-decoration: none;
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: 1px solid transparent; /* Hidden border to maintain layout on hover */
+    border-radius: 5px; /* Optional rounded corners */
+    color: #333; /* Adjust the color as needed */
+    background-color: #f4f4f4; /* Light background for buttons, adjust as needed */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    font-size: 20px;
+}
+
+.nav-link:hover {
+    text-decoration: none;
+    border-color: #0056b3; /* Color when hovering */
+    background-color: #e1e1e1; /* Slightly darker background on hover */
+}

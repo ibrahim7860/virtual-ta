@@ -1,0 +1,25 @@
+.home {
+    padding: 20px;
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hero h2 {
+    font-size: 3em;
+    color: #333;
+}
+
+.hero p {
+    font-size: 2em;
+    color: #666;
+}
+
+.homescreen {
+    width: 35%;
+    height: 35%;
+    background-color: transparent;
+}

@@ -41,9 +41,9 @@ function Register() {
                         />
                     </div>
                     <div className="input-group">
-                        <button type="submit">Create Account</button>
+                        <button type="submit">CREATE ACCOUNT</button>
                     </div>
-                    <a href="/" className="login">Back to login</a>
+                    <a href="/sign-in" className="login">Back to login</a>
                 </form>
             </div>
             <img src={homepage} alt="homepage" className="homepage-image" />
