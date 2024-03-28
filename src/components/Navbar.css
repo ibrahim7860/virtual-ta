@@ -38,3 +38,21 @@
     border-color: #0056b3; /* Color when hovering */
     background-color: #e1e1e1; /* Slightly darker background on hover */
 }
+
+.sign-out-link {
+    text-decoration: none;
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: 1px solid transparent; /* Hidden border to maintain layout on hover */
+    border-radius: 5px; /* Optional rounded corners */
+    color: white; /* Adjust the color as needed */
+    background-color: red; /* Light background for buttons, adjust as needed */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    font-size: 20px;
+}
+
+.sign-out-link:hover {
+    text-decoration: none;
+    border-color: #0056b3; /* Color when hovering */
+    background-color: darkred; /* Slightly darker background on hover */
+}

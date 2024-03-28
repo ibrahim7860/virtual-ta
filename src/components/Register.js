@@ -3,8 +3,10 @@ import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth} from "../firebase";
 import homepage from "../images/homepage.png";
 import './Register.css'
+import {useNavigate} from "react-router-dom";
 
 function Register() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -14,6 +16,7 @@ function Register() {
             .then((userCredential) => {
                 alert("Account created!");
                 console.log(userCredential);
+                navigate('/chat-page');
             }).catch((error) => {
             alert(error);
         })

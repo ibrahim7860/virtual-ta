@@ -3,8 +3,10 @@ import './Login.css';
 import homepage from '../images/homepage.png';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import {useNavigate} from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -13,6 +15,7 @@ function Login() {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 console.log(userCredential);
+                navigate('/chat-page');
             }).catch((error) => {
                 alert(error);
         })
