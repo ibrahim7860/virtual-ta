@@ -14,10 +14,14 @@ function Login() {
         event.preventDefault();
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                console.log(userCredential);
-                navigate('/chat-page');
+                const user = userCredential.user;
+                if (user.emailVerified) {
+                    navigate('/chat-page');
+                } else {
+                    alert("Please verify your email before logging in.");
+                }
             }).catch((error) => {
-                alert(error);
+                alert(error.message);
         })
     };
 

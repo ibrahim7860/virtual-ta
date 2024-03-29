@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { db, auth } from '../firebase';
 import { collection, addDoc, orderBy, query, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +8,7 @@ import './ChatbotPage.css';
 const ChatbotPage = () => {
     const [message, setMessage] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
+    const messagesEndRef = useRef(null);
 
     // Function to send message to backend and receive response
     const sendMessage = async () => {
@@ -50,6 +51,10 @@ const ChatbotPage = () => {
         return () => unsubscribe(); // Cleanup on unmount
     }, []);
 
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [chatHistory]);
+
     return (
         <div className="main-wrapper">
         <div className="chat-container">
@@ -59,6 +64,7 @@ const ChatbotPage = () => {
                         {msg.text}
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </div>
             <div className="chat-input">
                 <input

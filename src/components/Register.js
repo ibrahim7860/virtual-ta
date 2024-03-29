@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {createUserWithEmailAndPassword} from "firebase/auth";
+import React, {useState} from 'react';
+import {createUserWithEmailAndPassword, sendEmailVerification} from "firebase/auth";
 import {auth} from "../firebase";
 import homepage from "../images/homepage.png";
 import './Register.css'
@@ -10,16 +10,45 @@ function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleRegister = (event) => {
+    const isPasswordStrong = (password) => {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasNonAlphas = /\W/.test(password);
+        return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers && hasNonAlphas;
+    }
+
+    const handleRegister = async (event) => {
         event.preventDefault();
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                alert("Account created!");
-                console.log(userCredential);
-                navigate('/chat-page');
-            }).catch((error) => {
-            alert(error);
-        })
+        if (!email || !password) {
+            alert("Please fill all fields");
+            return;
+        }
+        if (!isPasswordStrong(password)) {
+            alert("Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special characters");
+            return;
+        }
+
+        try {
+            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredentials.user;
+
+            await sendEmailVerification(user);
+            alert("Verification email sent. Please check your email.");
+
+            let interval = setInterval(async () => {
+                await user.reload();
+                if (user.emailVerified) {
+                    clearInterval(interval);
+                    navigate("/chat-page");
+                }
+            }, 2000);
+
+            return () => clearInterval(interval);
+        } catch (error) {
+            alert(error.message);
+        }
     };
 
     return (

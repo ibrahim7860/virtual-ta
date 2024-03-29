@@ -8,9 +8,9 @@
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 75vh; /* Adjust the height as needed */
-    width: 90%; /* You can set a max width */
-    margin-top: 4%;
+    height: 78vh; /* Adjust the height as needed */
+    width: 95%; /* You can set a max width */
+    margin-top: 3%;
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;

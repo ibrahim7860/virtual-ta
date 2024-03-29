@@ -13,7 +13,7 @@ function ForgotPassword() {
             .then(() => {
                 alert("A link to reset your password has been sent to your email!")
             }).catch((error) => {
-            alert(error);
+            alert(error.message);
         })
     };
 

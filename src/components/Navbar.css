@@ -28,9 +28,9 @@
     border: 1px solid transparent; /* Hidden border to maintain layout on hover */
     border-radius: 5px; /* Optional rounded corners */
     color: #333; /* Adjust the color as needed */
-    background-color: #f4f4f4; /* Light background for buttons, adjust as needed */
     transition: all 0.3s ease; /* Smooth transition for hover effects */
-    font-size: 20px;
+    cursor: pointer;
+    background-color: transparent;
 }
 
 .nav-link:hover {
@@ -48,7 +48,6 @@
     color: white; /* Adjust the color as needed */
     background-color: red; /* Light background for buttons, adjust as needed */
     transition: all 0.3s ease; /* Smooth transition for hover effects */
-    font-size: 20px;
 }
 
 .sign-out-link:hover {
