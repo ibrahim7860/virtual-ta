@@ -1,28 +1,40 @@
-import { useState } from 'react';
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useState, useEffect } from 'react';
+import {
+    getAuth,
+    RecaptchaVerifier,
+    multiFactor as multiFactorInstance,
+    PhoneAuthProvider,
+    PhoneMultiFactorGenerator
+} from "firebase/auth";
+import {useNavigate} from "react-router-dom";
 import Input from 'react-phone-number-input/input'
 import { isPossiblePhoneNumber } from 'react-phone-number-input'
 import homepage from "../images/homepage.png";
+import {useAuth} from "../context/AuthContext";
 
 function EnrollMFA() {
-    const location = useLocation();
-    const { uid, email, emailVerified } = location.state;
     const [phoneNumber, setPhoneNumber] = useState('');
     const auth = getAuth();
     const navigate = useNavigate();
+    const { currentUser } = useAuth();
 
-    const setUpRecaptcha = () => {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    useEffect(() => {
+        const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
             'size': 'invisible',
             'callback': (response) => {
-                // reCAPTCHA solved - allow phoneNumber verification
                 console.log("Recaptcha verified");
             }});
-    };
+
+        window.recaptchaVerifier = recaptchaVerifier;
+
+        return () => {
+            if (recaptchaVerifier) {
+                recaptchaVerifier.clear();
+            }
+        };
+    }, []);
 
     const handleEnroll = () => {
-        setUpRecaptcha();
 
         const appVerifier = window.recaptchaVerifier;
         if (!isPossiblePhoneNumber(phoneNumber)) {
@@ -30,21 +42,31 @@ function EnrollMFA() {
             return;
         }
 
-        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-            .then((confirmationResult) => {
-                // SMS sent. Prompt user to enter the code from the message
-                const code = window.prompt('Enter the OTP sent to your phone');
-                return confirmationResult.confirm(code);
+        multiFactorInstance(currentUser).getSession()
+            .then((multiFactorSession) => {
+                const phoneInfoOptions = {
+                    phoneNumber: phoneNumber,
+                    session: multiFactorSession
+                };
+
+                const phoneAuthProvider = new PhoneAuthProvider(auth);
+                return phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, appVerifier);
             })
-            .then((result) => {
-                // User signed in successfully.
-                console.log('Phone number added to user', result.user);
+            .then((verificationId) => {
+                const code = window.prompt('Enter the OTP sent to your phone');
+                const cred = PhoneAuthProvider.credential(verificationId, code);
+                const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
+
+                return multiFactorInstance(currentUser).enroll(multiFactorAssertion, phoneNumber);
+            })
+            .then(() => {
                 alert('MFA setup successful.');
                 navigate("/chat-page");
-            }).catch((error) => {
-            // Error; SMS not sent
-            console.error('Error during MFA enrollment', error);
-        });
+            })
+            .catch((error) => {
+                console.error('Error during MFA enrollment', error);
+                alert("Error during MFA enrollment: " + error.message);
+            });
     };
 
     return (
