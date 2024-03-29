@@ -41,7 +41,7 @@ function Register() {
                 await user.reload();
                 if (user.emailVerified) {
                     clearInterval(interval);
-                    navigate("/chat-page");
+                    navigate("/enroll-mfa", { state: { uid: user.uid, email: user.email, emailVerified: user.emailVerified } });
                 }
             }, 2000);
 
