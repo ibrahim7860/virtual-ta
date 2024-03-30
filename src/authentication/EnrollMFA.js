@@ -26,12 +26,6 @@ function EnrollMFA() {
             }});
 
         window.recaptchaVerifier = recaptchaVerifier;
-
-        return () => {
-            if (recaptchaVerifier) {
-                recaptchaVerifier.clear();
-            }
-        };
     }, []);
 
     const handleEnroll = () => {

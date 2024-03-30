@@ -23,12 +23,6 @@ function Login() {
             }});
 
         window.recaptchaVerifier = recaptchaVerifier;
-
-        return () => {
-            if (recaptchaVerifier) {
-                recaptchaVerifier.clear();
-            }
-        };
     }, []);
 
     const handleMFA = (error) => {
