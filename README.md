@@ -1,9 +1,9 @@
 <div style="display: flex; justify-content: center; align-items: center">
-    <img alt="img.png" height="400" src="img.png" width="400"/>
+    <img alt="logo.png" height="400" src="./src/images/logo.png" width="400"/>
 </div>
 
-## Virtual-TA
-Virtual-TA is a chatbot designed by students for students to answer coding questions students may have in a chatroom format.
+# Virtual-TA - A Chatbot for Coding Questions
+### Virtual-TA is a chatbot designed by students for students to answer coding questions students may have in a chatroom format.
 
 ## Requirements
 To run Virtual-TA, you will need the following libraries:
@@ -50,10 +50,10 @@ flask run
 ## Model Training
 
 ## Frontend
-The VocalVault frontend was built using ReactJS, a JavaScript library for building user interfaces.
+The VirtualTA frontend was built using ReactJS, a JavaScript library for building user interfaces.
 
 ## Backend
-The VocalVault backend was built using Python with Flask, a micro web framework
+The VirtualTA backend was built using Python with Flask, a micro web framework
 
 ## Demo
 

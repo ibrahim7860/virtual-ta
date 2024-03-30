@@ -11,13 +11,13 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import './ChatbotPage.css';
+import TypingIndicator from "./TypingIndicator";
 
 const ChatbotPage = () => {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const messagesEndRef = useRef(null);
 
-  // Function to send a message to the Flask backend
   const sendMessageToBackend = async (userMessage) => {
     try {
       const response = await fetch('http://127.0.0.1:5000/generate', {
@@ -38,11 +38,9 @@ const ChatbotPage = () => {
     }
   };
 
-  // Function to send message and receive response
   const sendMessage = async () => {
     if (!message.trim()) return;
     
-    // Ensure the user is signed in
     if (!auth.currentUser) {
       console.error('No user signed in.');
       return;
@@ -54,8 +52,21 @@ const ChatbotPage = () => {
       timestamp: serverTimestamp(),
     };
 
-    // Send the message to your backend and wait for a response
+    setChatHistory(chatHistory => [...chatHistory, userMessage]);
+    setMessage('');
+
+    const typingMessage = {
+      text: '...',
+      sender: 'bot',
+      timestamp: serverTimestamp(),
+      isTyping: true,
+    };
+
+    setChatHistory(chatHistory => [...chatHistory, typingMessage]);
+
     const backendResponseText = await sendMessageToBackend(message);
+
+    setChatHistory(chatHistory => chatHistory.filter(msg => !msg.isTyping));
 
     const responseMessage = {
       text: backendResponseText,
@@ -63,18 +74,14 @@ const ChatbotPage = () => {
       timestamp: serverTimestamp(),
     };
 
-    // Save messages to Firestore
     await addDoc(collection(db, `${auth.currentUser.email}`), userMessage);
     await addDoc(collection(db, `${auth.currentUser.email}`), responseMessage);
 
-    // Update local chat history state
     setChatHistory([...chatHistory, userMessage, responseMessage]);
 
-    // Clear input field
     setMessage('');
   };
 
-  // Function to load chat history from Firestore on component mount
   useEffect(() => {
     if (auth.currentUser) {
       const q = query(collection(db, `${auth.currentUser.email}`), orderBy('timestamp', 'asc'));
@@ -84,12 +91,12 @@ const ChatbotPage = () => {
         setChatHistory(history);
       });
 
-      return () => unsubscribe(); // Cleanup on unmount
+      return () => unsubscribe();
     }
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView();
   }, [chatHistory]);
 
   return (
@@ -98,7 +105,7 @@ const ChatbotPage = () => {
         <div className="chat-history">
           {chatHistory.map((msg, index) => (
             <div key={index} className={`chat-message ${msg.sender === 'user' ? 'user' : 'bot'}`}>
-              {msg.text}
+              {msg.isTyping ? <TypingIndicator /> : msg.text}
             </div>
           ))}
           <div ref={messagesEndRef} />

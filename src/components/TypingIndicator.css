@@ -1,0 +1,32 @@
+.typing-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.typing-indicator > div {
+    background-color: #9b9b9b;
+    width: 9px;
+    height: 9px;
+    margin: 0 2px;
+    border-radius: 50%;
+    animation: typing 1s infinite ease;
+}
+
+@keyframes typing {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+.typing-indicator > div:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-indicator > div:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator > div:nth-child(3) {
+    animation-delay: 0.4s;
+}
