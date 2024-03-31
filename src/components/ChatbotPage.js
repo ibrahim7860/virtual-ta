@@ -113,12 +113,13 @@ const ChatbotPage = () => {
         <div className="chat-input">
           <input
             type="text"
+            placeholder="Type something..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           />
           <button onClick={sendMessage} className="send-button" style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer', marginLeft: '5px' }}>
-            <FontAwesomeIcon icon={faPaperPlane} size="2x" />
+            <FontAwesomeIcon icon={faPaperPlane} size="2x" color="white" />
           </button>
         </div>
       </div>

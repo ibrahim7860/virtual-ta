@@ -2,15 +2,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0; /* Remove default margin */
 }
 
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 78vh; /* Adjust the height as needed */
-    width: 95%; /* You can set a max width */
-    margin-top: 3%;
+    height: 82vh; /* Adjust the height as needed */
+    width: 98%; /* You can set a max width */
+    margin-top: 2%;
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
@@ -23,7 +22,7 @@
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
-    background-color: #f5f5f5;
+    background-color: #363131;
     font-size: 22px;
 }
 
@@ -42,27 +41,28 @@
 }
 
 .chat-message.bot {
-    background-color: #e9e9eb;
-    color: black;
+    background-color: #756e6e;
+    color: white;
     align-self: flex-start;
 }
 
 .chat-input {
     display: flex;
     padding: 20px;
-    background-color: #fff;
-    border-top: 1px solid #ccc;
+    background-color: #363131;
 }
 
 .chat-input input {
     flex-grow: 1;
     margin-right: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 15px;
+    border-radius: 25px;
     font-size: 20px;
+    background-color: #1e1b1b;
+    color: white;
+    border: none;
 }
 
-.chat-input button:hover {
-    background-color: #0056b3;
+.chat-input input:focus {
+    outline: none;
 }
