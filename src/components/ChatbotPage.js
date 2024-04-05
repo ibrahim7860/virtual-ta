@@ -81,7 +81,7 @@ const ChatbotPage = () => {
         "users",
         `${auth.currentUser.email}`,
         "chats",
-        `${auth.currentUser.email}-${localStorage.getItem("nextInt")}`,
+        `${auth.currentUser.email}-${localStorage.getItem("currentChatInt")}`,
         "messages"
       ),
       userMessage
@@ -92,7 +92,7 @@ const ChatbotPage = () => {
         "users",
         `${auth.currentUser.email}`,
         "chats",
-        `${auth.currentUser.email}-${localStorage.getItem("nextInt")}`,
+        `${auth.currentUser.email}-${localStorage.getItem("currentChatInt")}`,
         "messages"
       ),
       responseMessage
@@ -231,6 +231,7 @@ const ChatbotPage = () => {
         {!loadingHistory ? (
           <div className="chat-container">
             <div className="chat-history">
+              <div> CHAT {localStorage.getItem("currentChatInt")}</div>
               {currentChatHistory.map((msg, index) => (
                 <div
                   key={index}

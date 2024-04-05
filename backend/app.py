@@ -15,16 +15,31 @@ tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_cod
 model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True).to(device)
 model = model.eval()
 
+# @app.route('/generate', methods=['POST'])
+# def generate_text():
+#     # Get prompt from the request data; expect JSON with a 'prompt' field
+#     data = request.get_json()
+#     prompt = data.get('prompt', '')
+#     inputs = tokenizer.encode(prompt, return_tensors="pt").to(model.device)
+
+#     # Use your model to generate a response
+#     outputs = model.generate(inputs, max_length=256, top_k=1)
+#     generated_text = tokenizer.decode(outputs[0])
+
+#     # Send the generated text back as a JSON response
+#     return jsonify({'generated_text': generated_text})
+
 @app.route('/generate', methods=['POST'])
 def generate_text():
     # Get prompt from the request data; expect JSON with a 'prompt' field
     data = request.get_json()
     prompt = data.get('prompt', '')
     inputs = tokenizer.encode(prompt, return_tensors="pt").to(model.device)
+    prompt_length = len(tokenizer.encode(prompt))
 
     # Use your model to generate a response
     outputs = model.generate(inputs, max_length=256, top_k=1)
-    generated_text = tokenizer.decode(outputs[0])
+    generated_text = tokenizer.decode(outputs[0][prompt_length:], skip_special_tokens=True)
 
     # Send the generated text back as a JSON response
     return jsonify({'generated_text': generated_text})
