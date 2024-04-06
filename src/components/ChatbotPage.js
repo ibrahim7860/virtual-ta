@@ -9,13 +9,13 @@ import {
   addDoc,
   orderBy,
   query,
-  onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import "./ChatbotPage.css";
 import TypingIndicator from "./TypingIndicator";
+import ReactMarkdown from 'react-markdown';
 
 const ChatbotPage = () => {
   const [message, setMessage] = useState("");
@@ -39,8 +39,8 @@ const ChatbotPage = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
-      return data.generated_text;
+      const responseObject = await response.json();
+      return responseObject.data;
     } catch (error) {
       console.error("Could not fetch the data from the backend: ", error);
       return "Sorry, I couldn't fetch the response.";
@@ -61,13 +61,23 @@ const ChatbotPage = () => {
       timestamp: serverTimestamp(),
     };
 
+    const typingMessage = {
+      text: '...',
+      sender: 'bot',
+      timestamp: serverTimestamp(),
+      isTyping: true,
+    };
+
     setMessage("");
     setCurrentChatHistory((currentChatHistory) => [
       ...currentChatHistory,
       userMessage,
+      typingMessage
     ]);
 
     const backendResponseText = await sendMessageToBackend(message);
+
+    setCurrentChatHistory(currentChatHistory => currentChatHistory.filter(msg => !msg.isTyping))
 
     const responseMessage = {
       text: backendResponseText,
@@ -231,7 +241,9 @@ const ChatbotPage = () => {
         {!loadingHistory ? (
           <div className="chat-container">
             <div className="chat-history">
-              <div> CHAT {localStorage.getItem("currentChatInt")}</div>
+              <div style={{fontFamily: 'DM Sans", sans-serif', fontWeight: 'bold', fontSize: '30px', color: 'white'}}>
+                <div> CHAT {localStorage.getItem("currentChatInt")} </div>
+              </div>
               {currentChatHistory.map((msg, index) => (
                 <div
                   key={index}
@@ -239,7 +251,11 @@ const ChatbotPage = () => {
                     msg.sender === "user" ? "user" : "bot"
                   }`}
                 >
-                  {msg.isTyping ? <TypingIndicator /> : msg.text}
+                  {msg.isTyping ? <TypingIndicator /> : msg.sender === 'bot' ? (
+                      <ReactMarkdown>{msg.text}</ReactMarkdown>
+                  ) : (
+                      msg.text
+                  )}
                 </div>
               ))}
               <div ref={messagesEndRef} />

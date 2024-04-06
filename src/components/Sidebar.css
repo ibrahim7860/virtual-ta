@@ -1,28 +1,64 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
-  height: 78vh;
+  background-color: #363131;
+  height: 80vh;
   margin-top: 3%;
+  margin-left: 5px;
   border-radius: 8px;
   width: 250px;
+  overflow-y: auto;
+  font-family: "DM Sans", sans-serif;
+  font-weight: bold;
+  color: white;
+  font-size: 25px;
+  flex: 0 0 250px;
 }
 
 .header-sidebar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 20px;
+  align-items: center;
+  padding: 10px;
 }
 
 .chat-histories-sidebar {
   display: flex;
   flex-direction: column;
-  margin-top: 2vh;
+  overflow-y: auto; /* Scroll for individual chat histories */
+}
+
+.chat-history-button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s; /* Smooth transition for hover effect */
+  color: white;
+}
+
+.chat-history-button:hover {
+  background-color: #231e1e;
+}
+
+.chat-history-sidebar {
+  list-style: none;
   font-size: 22px;
 }
 
-.separator {
-  margin: 10px 0;
-  border-top: 1px dashed #ccc;
+.header-new-chat button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 0.9em;
+  color: white;
 }
+
+.header-new-chat button:hover {
+  color: #007bff;
+}
+

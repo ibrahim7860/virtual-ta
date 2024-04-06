@@ -20,7 +20,7 @@ function Sidebar({ chats, handleChatClick, loading }) {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <ul>
+          <ul style={{paddingLeft: 0}}>
             {chats.map((chat, index) => {
               const chatNumber = chat.id.split("-")[1];
               return (
