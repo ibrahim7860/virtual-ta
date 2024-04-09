@@ -2,6 +2,7 @@ import pathlib
 import jsonpickle
 import textwrap
 import google.generativeai as genai
+from google.generativeai.types import HarmCategory, HarmBlockThreshold
 from IPython.display import display
 from IPython.display import Markdown
 from flask import Flask, request, jsonify
@@ -24,7 +25,12 @@ def generate_text():
     prompt = data.get('prompt', '')
 
     # Use your model to generate a response
-    response = model.generate_content(prompt)
+    response = model.generate_content(prompt, safety_settings={
+        HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
+        HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
+        HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
+        HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+    })
 
     # Send the generated text back as a JSON response
     return jsonpickle.encode(to_markdown(response.text))
