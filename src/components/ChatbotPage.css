@@ -37,7 +37,7 @@
   padding: 10px;
   border-radius: 20px;
   display: inline-block;
-  max-width: 70%;
+  max-width: 100%;
 }
 
 .chat-message.user {
