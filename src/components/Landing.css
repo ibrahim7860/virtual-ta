@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  font-family: "Reem Kufi", sans-serif !important;
+  font-family: "DM Sans", sans-serif;
   padding: 0;
   margin: 0;
 }
@@ -57,7 +57,7 @@ body {
 .secondary-button {
   border: none;
   outline: none;
-  padding: 1rem 2.5rem;
+  padding: 1rem 13rem;
   background-color: #3F48CC;
   cursor: pointer;
   font-weight: 600;
@@ -67,7 +67,7 @@ body {
   align-items: center;
   justify-content: center;
   display: flex;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
 }
 
 .secondary-button:hover {

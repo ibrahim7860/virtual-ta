@@ -1,8 +1,11 @@
 import React from "react";
 import BannerBackground from "./Assets/banner.png";
 import BannerImage from "./Assets/mainImage.png";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="home-container">
       <div className="home-banner-container">
@@ -17,7 +20,9 @@ const Home = () => {
             and dynamic conversations to elevate your online learning
             experience!
           </p>
-          <button className="secondary-button">Try Now</button>
+          <button className="secondary-button" onClick={() => {
+            navigate('/sign-in');
+          }}>Try Now</button>
         </div>
         <div className="home-image-section">
           <img src={BannerImage} alt="" />
