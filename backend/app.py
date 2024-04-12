@@ -1,11 +1,9 @@
-import pathlib
 import jsonpickle
 import textwrap
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
-from IPython.display import display
 from IPython.display import Markdown
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from flask_cors import CORS
 
 app = Flask(__name__)
