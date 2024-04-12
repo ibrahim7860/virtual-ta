@@ -1,0 +1,124 @@
+* {
+  box-sizing: border-box;
+  font-family: "Reem Kufi", sans-serif !important;
+  padding: 0;
+  margin: 0;
+}
+.App {
+  margin: 0rem auto;
+  min-height: 100vh;
+  width: 85vw;
+  max-width: 1900px;
+}
+img {
+  height: auto;
+  max-width: 100%;
+}
+body {
+  overflow-x: hidden;
+  background-color: #f6f6f6;
+  max-width: 100%;
+}
+
+.home-image-section {
+  flex: 1;
+  max-width: 600px;
+}
+.home-banner-container {
+  display: flex;
+  position: relative;
+  padding-top: 3rem;
+}
+.home-bannerImage-container {
+  position: absolute;
+  z-index: -2;
+  top: -100px;
+  right: -170px;
+  max-width: 700px;
+}
+.primary-text {
+  margin: 1.5rem 0rem;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  max-width: 500px;
+  color: #6a6a6a;
+}
+.home-text-section {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+}
+.primary-heading {
+  color: #4c4c4c;
+  max-width: 600px;
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+.secondary-button {
+  border: none;
+  outline: none;
+  padding: 1rem 2.5rem;
+  background-color: #3F48CC;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 5rem;
+  color: white;
+  transition: 0.2s;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 1.1rem;
+}
+
+.secondary-button:hover {
+  background-color: #1e269f;
+}
+
+.work-section-top p {
+  max-width: 600px !important;
+  text-align: center;
+}
+.work-section-wrapper {
+  margin-top: 10rem;
+}
+.work-section-top h1 {
+  max-width: 700px !important;
+}
+.work-section-info {
+  padding: 1rem 2rem;
+  box-shadow: 3px 3px 10px rgb(154, 154, 154);
+  min-height: 27rem;
+  width: 17rem;
+  border-radius: 1rem;
+  text-align: center;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  color: #505050;
+  justify-content: center;
+  margin: 0 2rem;
+  margin-bottom: 3rem;
+}
+.work-section-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.work-section-info p {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  font-weight: 600;
+}
+.work-section-bottom {
+  margin-top: 1rem;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+.work-section-info h2 {
+  margin: 0rem 0rem;
+}
+
