@@ -3,7 +3,7 @@ import Register from "./Register";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ForgotPassword from "./ForgotPassword";
 import Navbar from "./Navbar";
-import Homepage from "./HomePage";
+import Landing from "./Landing";
 import ChatbotPage from "./ChatbotPage";
 import EnrollMFA from "../authentication/EnrollMFA";
 
@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<Landing />} />
         <Route path="sign-in" element={<Login />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="create-account" element={<Register />} />

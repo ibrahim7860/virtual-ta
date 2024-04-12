@@ -1,6 +1,7 @@
-body, html {
+.body {
     font-family: "DM Sans", sans-serif;
-    background-color: #D9DDF0;
+    background-color: #DADFF0;
+    height: 30rem;
 }
 
 .login-container {
