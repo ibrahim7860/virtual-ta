@@ -1,10 +1,19 @@
 import React from "react";
 import BannerBackground from "./Assets/banner.png";
 import BannerImage from "./Assets/mainImage.png";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase";
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    if (auth.currentUser) {
+      navigate("/chat-page");
+    } else {
+      navigate("sign-in");
+    }
+  };
 
   return (
     <div className="home-container">
@@ -20,9 +29,9 @@ const Home = () => {
             and dynamic conversations to elevate your online learning
             experience!
           </p>
-          <button className="secondary-button" onClick={() => {
-            navigate('/sign-in');
-          }}>Try Now</button>
+          <button className="secondary-button" onClick={() => handleNavigate()}>
+            Try Now
+          </button>
         </div>
         <div className="home-image-section">
           <img src={BannerImage} alt="" />
