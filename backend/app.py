@@ -13,7 +13,7 @@ def to_markdown(text):
     text = text.replace('•', '  *')
     return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
-genai.configure(api_key="AIzaSyA7ODhRFoH2l3Qhob0Jd0KB0Yutpj_jpXc")
+genai.configure(api_key="")
 model = genai.GenerativeModel('gemini-pro')
 
 @app.route('/generate', methods=['POST'])
