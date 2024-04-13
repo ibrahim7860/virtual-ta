@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import "./ChatbotPage.css";
 import TypingIndicator from "./TypingIndicator";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 
 const ChatbotPage = () => {
   const [message, setMessage] = useState("");
@@ -26,6 +26,12 @@ const ChatbotPage = () => {
   const [canCreateNewChat, setCanCreateNewChat] = useState(true);
 
   const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const sendMessageToBackend = async (userMessage) => {
     try {
@@ -62,8 +68,8 @@ const ChatbotPage = () => {
     };
 
     const typingMessage = {
-      text: '...',
-      sender: 'bot',
+      text: "...",
+      sender: "bot",
       timestamp: serverTimestamp(),
       isTyping: true,
     };
@@ -72,12 +78,14 @@ const ChatbotPage = () => {
     setCurrentChatHistory((currentChatHistory) => [
       ...currentChatHistory,
       userMessage,
-      typingMessage
+      typingMessage,
     ]);
 
     const backendResponseText = await sendMessageToBackend(message);
 
-    setCurrentChatHistory(currentChatHistory => currentChatHistory.filter(msg => !msg.isTyping))
+    setCurrentChatHistory((currentChatHistory) =>
+      currentChatHistory.filter((msg) => !msg.isTyping)
+    );
 
     const responseMessage = {
       text: backendResponseText,
@@ -225,10 +233,16 @@ const ChatbotPage = () => {
   };
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView();
     updateChatHistoryForCurrentChat();
     fetchUserHistory();
+    scrollToBottom();
   }, [currentChatHistory]);
+
+  const handleNewChatClick = () => {
+    console.log("NEW CHAT BUTTON CLICKED!");
+    createNewChat(userChatHistory);
+    setCurrentChatHistory([]);
+  };
 
   return (
     <div className="chat-screen">
@@ -236,12 +250,20 @@ const ChatbotPage = () => {
         chats={userChatHistory}
         handleChatClick={handleChatClick}
         loadingHistory={loadingHistory}
+        handleNewChatClick={handleNewChatClick}
       />
       <div className="main-wrapper">
         {!loadingHistory ? (
           <div className="chat-container">
             <div className="chat-history">
-              <div style={{fontFamily: 'DM Sans", sans-serif', fontWeight: 'bold', fontSize: '30px', color: 'white'}}>
+              <div
+                style={{
+                  fontFamily: 'DM Sans", sans-serif',
+                  fontWeight: "bold",
+                  fontSize: "30px",
+                  color: "white",
+                }}
+              >
                 <div> CHAT {localStorage.getItem("currentChatInt")} </div>
               </div>
               {currentChatHistory.map((msg, index) => (
@@ -251,10 +273,12 @@ const ChatbotPage = () => {
                     msg.sender === "user" ? "user" : "bot"
                   }`}
                 >
-                  {msg.isTyping ? <TypingIndicator /> : msg.sender === 'bot' ? (
-                      <ReactMarkdown>{msg.text}</ReactMarkdown>
+                  {msg.isTyping ? (
+                    <TypingIndicator />
+                  ) : msg.sender === "bot" ? (
+                    <ReactMarkdown>{msg.text}</ReactMarkdown>
                   ) : (
-                      msg.text
+                    msg.text
                   )}
                 </div>
               ))}

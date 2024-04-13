@@ -5,13 +5,13 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 import "./Sidebar.css";
 
-function Sidebar({ chats, handleChatClick, loading }) {
+function Sidebar({ chats, handleChatClick, loading, handleNewChatClick }) {
   return (
     <div className="sidebar">
       <div className="header-sidebar">
         <div className="header-title">History</div>
         <div className="header-new-chat">
-          <button>
+          <button onClick={() => handleNewChatClick()}>
             <FontAwesomeIcon icon={faPenToSquare} />
           </button>
         </div>
@@ -20,7 +20,7 @@ function Sidebar({ chats, handleChatClick, loading }) {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <ul style={{paddingLeft: 0}}>
+          <ul style={{ paddingLeft: 0 }}>
             {chats.map((chat, index) => {
               const chatNumber = chat.id.split("-")[1];
               return (
