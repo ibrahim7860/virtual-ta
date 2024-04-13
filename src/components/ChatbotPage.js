@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { db, auth } from "../firebase";
 import Sidebar from "./Sidebar";
 import {
@@ -9,6 +9,7 @@ import {
   addDoc,
   orderBy,
   query,
+  deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +29,7 @@ const ChatbotPage = () => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
+    console.log("SCROLLING");
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -134,6 +136,34 @@ const ChatbotPage = () => {
     return maxInteger + 1;
   };
 
+  const handleChatDelete = async (chatNumber) => {
+    updateChatHistoryForCurrentChat();
+
+    try {
+      const docRef = doc(
+        db,
+        "users",
+        `${auth.currentUser.email}`,
+        "chats",
+        `${auth.currentUser.email}-${chatNumber}`
+      );
+
+      // Delete the document
+      await deleteDoc(docRef);
+
+      console.log("Chat document deleted successfully");
+    } catch (error) {
+      console.error("Error deleting chat document: ", error);
+    }
+
+    const updatedUserChatHistory = userChatHistory.filter(
+      (chat) => chat.id !== `${auth.currentUser.email}-${chatNumber}`
+    );
+
+    setUserChatHistory(updatedUserChatHistory);
+    handleNewChatClick();
+  };
+
   const handleChatClick = async (chatNumber) => {
     updateChatHistoryForCurrentChat();
 
@@ -235,11 +265,13 @@ const ChatbotPage = () => {
   useEffect(() => {
     updateChatHistoryForCurrentChat();
     fetchUserHistory();
+  }, [currentChatHistory]);
+
+  useLayoutEffect(() => {
     scrollToBottom();
   }, [currentChatHistory]);
 
   const handleNewChatClick = () => {
-    console.log("NEW CHAT BUTTON CLICKED!");
     createNewChat(userChatHistory);
     setCurrentChatHistory([]);
   };
@@ -251,6 +283,7 @@ const ChatbotPage = () => {
         handleChatClick={handleChatClick}
         loadingHistory={loadingHistory}
         handleNewChatClick={handleNewChatClick}
+        handleChatDelete={handleChatDelete}
       />
       <div className="main-wrapper">
         {!loadingHistory ? (
