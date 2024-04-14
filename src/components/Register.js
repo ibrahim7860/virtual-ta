@@ -75,7 +75,7 @@ function Register() {
   return (
     <div>
       <div className="login-container">
-        <h2>Create an account</h2>
+        <h2>Create your account</h2>
         <form onSubmit={handleRegister}>
           <div className="input-group">
             <input

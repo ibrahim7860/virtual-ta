@@ -285,7 +285,6 @@ const ChatbotPage = () => {
         handleNewChatClick={handleNewChatClick}
         handleChatDelete={handleChatDelete}
       />
-      <div className="main-wrapper">
         {!loadingHistory ? (
           <div className="chat-container">
             <div className="chat-history">
@@ -335,7 +334,7 @@ const ChatbotPage = () => {
                   marginLeft: "5px",
                 }}
               >
-                <FontAwesomeIcon icon={faPaperPlane} size="2x" />
+                <FontAwesomeIcon icon={faPaperPlane} size="2x" color="white" />
               </button>
             </div>
           </div>
@@ -343,7 +342,6 @@ const ChatbotPage = () => {
           <div>Loading...</div>
         )}
       </div>
-    </div>
   );
 };
 
