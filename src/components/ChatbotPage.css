@@ -11,6 +11,8 @@
   margin-right: 1%;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for better visibility */
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .chat-history {
