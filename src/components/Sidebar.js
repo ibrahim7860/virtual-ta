@@ -5,7 +5,13 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 import "./Sidebar.css";
 
-function Sidebar({ chats, handleChatClick, loading, handleNewChatClick }) {
+function Sidebar({
+  chats,
+  handleChatClick,
+  loading,
+  handleNewChatClick,
+  handleChatDelete,
+}) {
   return (
     <div className="sidebar">
       <div className="header-sidebar">
@@ -24,13 +30,23 @@ function Sidebar({ chats, handleChatClick, loading, handleNewChatClick }) {
             {chats.map((chat, index) => {
               const chatNumber = chat.id.split("-")[1];
               return (
-                <button
-                  key={index}
-                  className="chat-history-button"
-                  onClick={() => handleChatClick(chatNumber)}
-                >
-                  <li className="chat-history-sidebar">Chat {chatNumber}</li>
-                </button>
+                <>
+                  <button
+                    key={index}
+                    className="chat-history-button"
+                    onClick={() => handleChatClick(chatNumber)}
+                  >
+                    <li className="chat-history-sidebar">Chat {chatNumber}</li>
+                    <div className="chat-delete-button">
+                      <button
+                        className="chat-delete-button"
+                        onClick={() => handleChatDelete(chatNumber)}
+                      >
+                        DELETE
+                      </button>
+                    </div>
+                  </button>
+                </>
               );
             })}
           </ul>

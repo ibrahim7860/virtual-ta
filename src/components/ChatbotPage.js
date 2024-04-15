@@ -21,7 +21,6 @@ import ReactMarkdown from "react-markdown";
 const ChatbotPage = () => {
   const [message, setMessage] = useState("");
   const [currentChatHistory, setCurrentChatHistory] = useState([]);
-
   const [userChatHistory, setUserChatHistory] = useState([]);
   const [loadingHistory, setloadingHistory] = useState(true);
   const [canCreateNewChat, setCanCreateNewChat] = useState(true);
@@ -199,7 +198,7 @@ const ChatbotPage = () => {
     try {
       await setDoc(
         doc(db, "users", `${auth.currentUser.email}`, "chats", documentID),
-        { timestamp: serverTimestamp() }
+        { timestamp: serverTimestamp(), title: "Enter Title For Chat..." }
       );
     } catch (error) {
       console.error("Error adding document:", error);
@@ -297,7 +296,7 @@ const ChatbotPage = () => {
                   color: "white",
                 }}
               >
-                <div> CHAT {localStorage.getItem("currentChatInt")} </div>
+                <div>Chat - {localStorage.getItem("currentChatInt")}</div>
               </div>
               {currentChatHistory.map((msg, index) => (
                 <div

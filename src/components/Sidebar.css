@@ -30,6 +30,9 @@
 }
 
 .chat-history-button {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Distribute items evenly along the main axis */
+  align-items: center; /* Align items vertically */
   background: none;
   border: none;
   text-align: left;
@@ -42,6 +45,17 @@
 
 .chat-history-button:hover {
   background-color: #231e1e;
+}
+
+.chat-delete-button button {
+  background: none;
+  border: none;
+  color: white; /* Adjust delete button color */
+  cursor: pointer;
+}
+
+.chat-delete-button button:hover {
+  color: red; /* Adjust delete button color */
 }
 
 .chat-history-sidebar {
@@ -61,4 +75,3 @@
 .header-new-chat button:hover {
   color: #007bff;
 }
-
