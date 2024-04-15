@@ -1,6 +1,5 @@
 .body, html {
     font-family: "DM Sans", sans-serif;
-    background-color: #DADFF0;
     height: 30rem;
 }
 
@@ -83,5 +82,5 @@ a:hover {
     left: 75%;
     transform: translate(-50%, -50%);
     width: 45%;
-    height: 65%;
+    height: 75%;
 }

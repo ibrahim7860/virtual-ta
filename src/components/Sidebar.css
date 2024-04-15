@@ -1,11 +1,10 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  background-color: #363131;
-  height: 80vh;
-  margin-top: 3%;
-  margin-left: 5px;
-  border-radius: 8px;
+  background-color: #181414;
+  height: 85vh;
+  margin-top: 1%;
+  margin-left: 1%;
   width: 250px;
   overflow-y: auto;
   font-family: "DM Sans", sans-serif;
@@ -13,6 +12,8 @@
   color: white;
   font-size: 25px;
   flex: 0 0 250px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .header-sidebar {
@@ -27,6 +28,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto; /* Scroll for individual chat histories */
+  scrollbar-color: #696464 transparent;
 }
 
 .chat-history-button {
@@ -44,7 +46,7 @@
 }
 
 .chat-history-button:hover {
-  background-color: #231e1e;
+  background-color: #3f3e3e;
 }
 
 .chat-delete-button button {

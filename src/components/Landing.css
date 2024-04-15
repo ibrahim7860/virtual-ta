@@ -48,6 +48,7 @@ body {
   align-items: flex-start;
   display: flex;
   flex: 1;
+  margin-top: 3rem;
 }
 .primary-heading {
   color: #4c4c4c;
@@ -98,6 +99,10 @@ body {
   justify-content: center;
   margin: 0 2rem;
   margin-bottom: 3rem;
+  transition: transform 0.2s ease-in-out;
+}
+.work-section-info:hover {
+  transform: scale(1.05); /* Scales the tile up to 105% of its original size on hover */
 }
 .work-section-top {
   display: flex;
