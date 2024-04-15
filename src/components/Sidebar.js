@@ -2,6 +2,7 @@ import React from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import "./Sidebar.css";
 
@@ -42,7 +43,7 @@ function Sidebar({
                         className="chat-delete-button"
                         onClick={() => handleChatDelete(chatNumber)}
                       >
-                        DELETE
+                          <FontAwesomeIcon icon={faTrash} size="xl" />
                       </button>
                     </div>
                   </button>
