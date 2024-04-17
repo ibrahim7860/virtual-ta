@@ -76,11 +76,26 @@
   100% { transform: scale(1); }
 }
 
-.rating-button.active {
-  background-color: #afacac; /* Change color to indicate active state */
+.rating-button:hover {
+  font-size: 1.5rem;
 }
 
 .rating-button {
   margin-right: 10px;
+  margin-top: 5px;
   cursor: pointer;
+  background: transparent;
+  transition: background 0.3s ease;
+  border: none;
+  border-radius: 15px;
+  font-size: 1.2rem;
+}
+
+.chat-message.bot .rating-button {
+  visibility: hidden;
+  transition: visibility 0s ease;
+}
+
+.chat-message.bot:hover .rating-button {
+  visibility: visible;
 }

@@ -342,13 +342,13 @@ const ChatbotPage = () => {
                         onClick={() => updateRating(msg.id, 'up')}
                         className={`rating-button ${ratings[msg.id] === 'up' ? 'active' : ''}`}
                         style={{ animation: ratings[msg.id] === 'up' ? 'buttonClickAnimation 0.5s' : 'none' }}>
-                        <FontAwesomeIcon icon={faThumbsUp} />
+                        <FontAwesomeIcon icon={faThumbsUp} color="lightgrey" />
                       </button>
                       <button
                         onClick={() => updateRating(msg.id, 'down')}
                         className={`rating-button ${ratings[msg.id] === 'down' ? 'active' : ''}`}
                         style={{ animation: ratings[msg.id] === 'down' ? 'buttonClickAnimation 0.5s' : 'none' }}>
-                        <FontAwesomeIcon icon={faThumbsDown} />
+                        <FontAwesomeIcon icon={faThumbsDown} color="lightgrey" />
                       </button>
                     </div>
                   </>
