@@ -13,10 +13,11 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 import "./ChatbotPage.css";
 import TypingIndicator from "./TypingIndicator";
 import ReactMarkdown from "react-markdown";
+
 
 const ChatbotPage = () => {
   const [message, setMessage] = useState("");
@@ -24,6 +25,7 @@ const ChatbotPage = () => {
   const [userChatHistory, setUserChatHistory] = useState([]);
   const [loadingHistory, setloadingHistory] = useState(true);
   const [canCreateNewChat, setCanCreateNewChat] = useState(true);
+  const [ratings, setRatings] = useState({});
 
   const messagesEndRef = useRef(null);
 
@@ -47,7 +49,8 @@ const ChatbotPage = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const responseObject = await response.json();
-      return responseObject.data;
+      console.log(responseObject.text)
+      return responseObject.text;
     } catch (error) {
       console.error("Could not fetch the data from the backend: ", error);
       return "Sorry, I couldn't fetch the response.";
@@ -66,6 +69,7 @@ const ChatbotPage = () => {
       text: message,
       sender: "user",
       timestamp: serverTimestamp(),
+      
     };
 
     const typingMessage = {
@@ -83,6 +87,7 @@ const ChatbotPage = () => {
     ]);
 
     const backendResponseText = await sendMessageToBackend(message);
+    console.log("Backend response text to be added:", backendResponseText);
 
     setCurrentChatHistory((currentChatHistory) =>
       currentChatHistory.filter((msg) => !msg.isTyping)
@@ -92,6 +97,9 @@ const ChatbotPage = () => {
       text: backendResponseText,
       sender: "bot",
       timestamp: serverTimestamp(),
+      rating: "none",
+      id: "" // Placeholder, will be replaced by actual document ID
+
     };
 
     await addDoc(
@@ -105,7 +113,7 @@ const ChatbotPage = () => {
       ),
       userMessage
     );
-    await addDoc(
+    const responseMsgRef = await addDoc(
       collection(
         db,
         "users",
@@ -117,11 +125,33 @@ const ChatbotPage = () => {
       responseMessage
     );
 
-    setCurrentChatHistory((currentChatHistory) => [
-      ...currentChatHistory,
-      responseMessage,
-    ]);
+    setCurrentChatHistory(currentChatHistory =>
+      currentChatHistory.filter(msg => !msg.isTyping).concat([
+        {...responseMessage, id: responseMsgRef.id}
+      ])
+    );
+
   };
+
+  const updateRating = async (messageId, newRating) => {
+    if (!messageId) {
+        console.error("Message ID is undefined.");
+        return;
+    }
+
+    const messageRef = doc(db, "users", auth.currentUser.email, "chats", `${auth.currentUser.email}-${localStorage.getItem("currentChatInt")}`, "messages", messageId);
+
+    try {
+        await setDoc(messageRef, { rating: newRating }, { merge: true });
+        setRatings(prev => ({ ...prev, [messageId]: newRating }));
+        console.log("Rating updated successfully");
+    } catch (error) {
+        console.error("Error updating rating: ", error);
+    }
+};
+
+
+
 
   const getNextInteger = (docs) => {
     let maxInteger = 0;
@@ -284,64 +314,82 @@ const ChatbotPage = () => {
         handleNewChatClick={handleNewChatClick}
         handleChatDelete={handleChatDelete}
       />
-        {!loadingHistory ? (
-          <div className="chat-container">
-            <div className="chat-history">
+      {!loadingHistory ? (
+        <div className="chat-container">
+          <div className="chat-history">
+            <div
+              style={{
+                fontFamily: 'DM Sans", sans-serif',
+                fontWeight: "bold",
+                fontSize: "30px",
+                color: "white",
+              }}
+            >
+              <div>Chat - {localStorage.getItem("currentChatInt")}</div>
+            </div>
+            {currentChatHistory.map((msg, index) => (
               <div
-                style={{
-                  fontFamily: 'DM Sans", sans-serif',
-                  fontWeight: "bold",
-                  fontSize: "30px",
-                  color: "white",
-                }}
+                key={index}
+                className={`chat-message ${msg.sender === "user" ? "user" : "bot"}`}
               >
-                <div>Chat - {localStorage.getItem("currentChatInt")}</div>
-              </div>
-              {currentChatHistory.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`chat-message ${
-                    msg.sender === "user" ? "user" : "bot"
-                  }`}
-                >
-                  {msg.isTyping ? (
-                    <TypingIndicator />
-                  ) : msg.sender === "bot" ? (
+                {msg.isTyping ? (
+                  <TypingIndicator />
+                ) : msg.sender === "bot" ? (
+                  <>
                     <ReactMarkdown>{msg.text}</ReactMarkdown>
-                  ) : (
-                    msg.text
-                  )}
-                </div>
-              ))}
-              <div ref={messagesEndRef} />
-            </div>
-            <div className="chat-input">
-              <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              />
-              <button
-                onClick={sendMessage}
-                className="send-button"
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: "0",
-                  cursor: "pointer",
-                  marginLeft: "5px",
-                }}
-              >
-                <FontAwesomeIcon icon={faPaperPlane} size="2x" color="white" />
-              </button>
-            </div>
+                    <div style={{ display: "flex", justifyContent: "left" }}>
+                      <button
+                        onClick={() => updateRating(msg.id, 'up')}
+                        className={`rating-button ${ratings[msg.id] === 'up' ? 'active' : ''}`}
+                        style={{ animation: ratings[msg.id] === 'up' ? 'buttonClickAnimation 0.5s' : 'none' }}>
+                        <FontAwesomeIcon icon={faThumbsUp} />
+                      </button>
+                      <button
+                        onClick={() => updateRating(msg.id, 'down')}
+                        className={`rating-button ${ratings[msg.id] === 'down' ? 'active' : ''}`}
+                        style={{ animation: ratings[msg.id] === 'down' ? 'buttonClickAnimation 0.5s' : 'none' }}>
+                        <FontAwesomeIcon icon={faThumbsDown} />
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  msg.text
+                )}
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
           </div>
-        ) : (
-          <div>Loading...</div>
-        )}
-      </div>
+          <div className="chat-input">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            />
+            <button
+              onClick={sendMessage}
+              className="send-button"
+              style={{
+                background: "none",
+                border: "none",
+                padding: "0",
+                cursor: "pointer",
+                marginLeft: "5px",
+              }}
+            >
+              <FontAwesomeIcon icon={faPaperPlane} size="2x" color="white" />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>Loading...</div>
+      )}
+    </div>
   );
 };
 
 export default ChatbotPage;
+
+
+
+
