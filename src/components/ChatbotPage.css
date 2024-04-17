@@ -69,3 +69,18 @@
 .chat-input input:focus {
   outline: none;
 }
+
+@keyframes buttonClickAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.rating-button.active {
+  background-color: #afacac; /* Change color to indicate active state */
+}
+
+.rating-button {
+  margin-right: 10px;
+  cursor: pointer;
+}
