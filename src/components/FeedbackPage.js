@@ -1,22 +1,37 @@
 import React, { useState } from 'react';
 import './FeedbackPage.css';
 import logo from '../images/logo.png';
+import { db } from '../firebase';
+import { collection, addDoc } from "firebase/firestore";
 
 const FeedbackPage = () => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
 
     const handleRatingChange = (event) => {
-        setRating(event.target.value);
+        const newRating = event.target.value;
+        setRating(newRating); // Update the state with the new rating
+        console.log(newRating);
     };
 
     const handleCommentChange = (event) => {
         setComment(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(`Rating: ${rating}, Comment: ${comment}`);
+        try {
+            const docRef = await addDoc(collection(db, "feedback"), {
+                rating: rating,
+                comment: comment,
+            });
+
+            alert("Feedback submitted successfully!");
+            setRating(0);
+            setComment('');
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
     };
 
     return (
@@ -30,7 +45,7 @@ const FeedbackPage = () => {
                             id={`star-${i + 1}`}
                             type="radio"
                             name="rating"
-                            value={i + 1}
+                            value={5 - i}
                             onChange={handleRatingChange}
                         />
                         <label htmlFor={`star-${i + 1}`}>★</label>
