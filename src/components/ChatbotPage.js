@@ -6,18 +6,23 @@ import {
   doc,
   setDoc,
   getDocs,
+  getDoc,
   addDoc,
   orderBy,
   query,
+  updateDoc,
   deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPaperPlane,
+  faThumbsUp,
+  faThumbsDown,
+} from "@fortawesome/free-solid-svg-icons";
 import "./ChatbotPage.css";
 import TypingIndicator from "./TypingIndicator";
 import ReactMarkdown from "react-markdown";
-
 
 const ChatbotPage = () => {
   const [message, setMessage] = useState("");
@@ -26,6 +31,7 @@ const ChatbotPage = () => {
   const [loadingHistory, setloadingHistory] = useState(true);
   const [canCreateNewChat, setCanCreateNewChat] = useState(true);
   const [ratings, setRatings] = useState({});
+  const [chatTitle, setChatTitle] = useState("");
 
   const messagesEndRef = useRef(null);
 
@@ -49,7 +55,7 @@ const ChatbotPage = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const responseObject = await response.json();
-      console.log(responseObject.text)
+      console.log(responseObject.text);
       return responseObject.text;
     } catch (error) {
       console.error("Could not fetch the data from the backend: ", error);
@@ -69,7 +75,6 @@ const ChatbotPage = () => {
       text: message,
       sender: "user",
       timestamp: serverTimestamp(),
-      
     };
 
     const typingMessage = {
@@ -98,8 +103,7 @@ const ChatbotPage = () => {
       sender: "bot",
       timestamp: serverTimestamp(),
       rating: "none",
-      id: "" // Placeholder, will be replaced by actual document ID
-
+      id: "", // Placeholder, will be replaced by actual document ID
     };
 
     await addDoc(
@@ -125,18 +129,17 @@ const ChatbotPage = () => {
       responseMessage
     );
 
-    setCurrentChatHistory(currentChatHistory =>
-      currentChatHistory.filter(msg => !msg.isTyping).concat([
-        {...responseMessage, id: responseMsgRef.id}
-      ])
+    setCurrentChatHistory((currentChatHistory) =>
+      currentChatHistory
+        .filter((msg) => !msg.isTyping)
+        .concat([{ ...responseMessage, id: responseMsgRef.id }])
     );
-
   };
 
   const updateRating = async (messageId, newRating) => {
     if (!messageId) {
-        console.error("Message ID is undefined.");
-        return;
+      console.error("Message ID is undefined.");
+      return;
     }
 
     // Get the current rating from state
@@ -145,18 +148,24 @@ const ChatbotPage = () => {
     // Toggle the rating: if the same button is clicked, remove the rating; otherwise, update it
     const updatedRating = currentRating === newRating ? "none" : newRating;
 
-    const messageRef = doc(db, "users", auth.currentUser.email, "chats", `${auth.currentUser.email}-${localStorage.getItem("currentChatInt")}`, "messages", messageId);
+    const messageRef = doc(
+      db,
+      "users",
+      auth.currentUser.email,
+      "chats",
+      `${auth.currentUser.email}-${localStorage.getItem("currentChatInt")}`,
+      "messages",
+      messageId
+    );
 
     try {
-        await setDoc(messageRef, { rating: updatedRating }, { merge: true });
-        setRatings(prev => ({ ...prev, [messageId]: updatedRating }));
-        console.log("Rating updated successfully");
+      await setDoc(messageRef, { rating: updatedRating }, { merge: true });
+      setRatings((prev) => ({ ...prev, [messageId]: updatedRating }));
+      console.log("Rating updated successfully");
     } catch (error) {
-        console.error("Error updating rating: ", error);
+      console.error("Error updating rating: ", error);
     }
-};
-
-
+  };
 
   const getNextInteger = (docs) => {
     let maxInteger = 0;
@@ -201,15 +210,31 @@ const ChatbotPage = () => {
   const handleChatClick = async (chatNumber) => {
     updateChatHistoryForCurrentChat();
 
+    // Define the base query for the chat
+    const baseQuery = doc(
+      db,
+      "users",
+      `${auth.currentUser.email}`,
+      "chats",
+      `${auth.currentUser.email}-${chatNumber}`
+    );
+
+    try {
+      const docSnap = await getDoc(baseQuery);
+
+      if (docSnap.exists()) {
+        const title = docSnap.data().title;
+        setChatTitle(title);
+      } else {
+        console.log("Document does not exist");
+      }
+    } catch (error) {
+      console.error("Error getting document:", error);
+    }
+
+    // Create the query for the chat's messages
     const q = query(
-      collection(
-        db,
-        "users",
-        `${auth.currentUser.email}`,
-        "chats",
-        `${auth.currentUser.email}-${chatNumber}`,
-        "messages"
-      ),
+      collection(baseQuery, "messages"),
       orderBy("timestamp", "asc")
     );
 
@@ -227,13 +252,14 @@ const ChatbotPage = () => {
     const nextIntValue = getNextInteger(userChatHistory);
     localStorage.setItem("nextInt", nextIntValue);
     localStorage.setItem("currentChatInt", nextIntValue);
+    setChatTitle("");
 
     const documentID = `${auth.currentUser.email}-${nextIntValue}`;
 
     try {
       await setDoc(
         doc(db, "users", `${auth.currentUser.email}`, "chats", documentID),
-        { timestamp: serverTimestamp(), title: "Enter Title For Chat..." }
+        { timestamp: serverTimestamp(), title: "" }
       );
     } catch (error) {
       console.error("Error adding document:", error);
@@ -278,6 +304,10 @@ const ChatbotPage = () => {
     }
   }, [loadingHistory]);
 
+  const handleChatSidebarRename = (chatNumber) => {
+    handleTitleClick(chatNumber);
+  };
+
   const updateChatHistoryForCurrentChat = () => {
     const index = userChatHistory.findIndex(
       (chat) =>
@@ -293,6 +323,32 @@ const ChatbotPage = () => {
         };
         return updatedUserChatHistory;
       });
+    }
+  };
+
+  const handleTitleClick = async (chatNumber) => {
+    const title = prompt(
+      "Please enter a title for the chat to make it easier to recall later:"
+    );
+    if (title !== null && title.trim() !== null) {
+      setChatTitle(title);
+
+      const chatDocRef = doc(
+        db,
+        "users",
+        `${auth.currentUser.email}`,
+        "chats",
+        `${auth.currentUser.email}-${chatNumber}`
+      );
+
+      try {
+        await updateDoc(chatDocRef, {
+          title: title,
+        });
+        console.log("Chat title updated successfully");
+      } catch (error) {
+        console.error("Error updating chat title:", error);
+      }
     }
   };
 
@@ -318,6 +374,7 @@ const ChatbotPage = () => {
         loadingHistory={loadingHistory}
         handleNewChatClick={handleNewChatClick}
         handleChatDelete={handleChatDelete}
+        handleChatSidebarRename={handleChatSidebarRename}
       />
       {!loadingHistory ? (
         <div className="chat-container">
@@ -330,10 +387,27 @@ const ChatbotPage = () => {
                 color: "white",
               }}
             >
-              <div>Chat - {localStorage.getItem("currentChatInt")}</div>
+              <div>
+                {chatTitle === "" ? (
+                  <div
+                    onClick={() =>
+                      handleTitleClick(localStorage.getItem("currentChatInt"))
+                    }
+                  >
+                    Please enter a title for chat...
+                  </div>
+                ) : (
+                  chatTitle
+                )}
+              </div>{" "}
             </div>
             {currentChatHistory.map((msg, index) => (
-              <div key={index} className={`chat-message ${msg.sender === "user" ? "user" : "bot"}`}>
+              <div
+                key={index}
+                className={`chat-message ${
+                  msg.sender === "user" ? "user" : "bot"
+                }`}
+              >
                 {msg.isTyping ? (
                   <TypingIndicator />
                 ) : msg.sender === "bot" ? (
@@ -341,16 +415,42 @@ const ChatbotPage = () => {
                     <ReactMarkdown>{msg.text}</ReactMarkdown>
                     <div style={{ display: "flex", justifyContent: "left" }}>
                       <button
-                        onClick={() => updateRating(msg.id, 'up')}
-                        className={`rating-button ${ratings[msg.id] === 'up' ? 'active' : ''}`}
-                        style={{ animation: ratings[msg.id] === 'up' ? 'buttonClickAnimation 0.5s' : 'none' }}>
-                        <FontAwesomeIcon icon={faThumbsUp} color={ratings[msg.id] === 'up' ? 'black' : 'lightgrey'} />
+                        onClick={() => updateRating(msg.id, "up")}
+                        className={`rating-button ${
+                          ratings[msg.id] === "up" ? "active" : ""
+                        }`}
+                        style={{
+                          animation:
+                            ratings[msg.id] === "up"
+                              ? "buttonClickAnimation 0.5s"
+                              : "none",
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faThumbsUp}
+                          color={
+                            ratings[msg.id] === "up" ? "black" : "lightgrey"
+                          }
+                        />
                       </button>
                       <button
-                        onClick={() => updateRating(msg.id, 'down')}
-                        className={`rating-button ${ratings[msg.id] === 'down' ? 'active' : ''}`}
-                        style={{ animation: ratings[msg.id] === 'down' ? 'buttonClickAnimation 0.5s' : 'none' }}>
-                        <FontAwesomeIcon icon={faThumbsDown} color={ratings[msg.id] === 'down' ? 'black' : 'lightgrey'} />
+                        onClick={() => updateRating(msg.id, "down")}
+                        className={`rating-button ${
+                          ratings[msg.id] === "down" ? "active" : ""
+                        }`}
+                        style={{
+                          animation:
+                            ratings[msg.id] === "down"
+                              ? "buttonClickAnimation 0.5s"
+                              : "none",
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faThumbsDown}
+                          color={
+                            ratings[msg.id] === "down" ? "black" : "lightgrey"
+                          }
+                        />
                       </button>
                     </div>
                   </>
@@ -391,7 +491,3 @@ const ChatbotPage = () => {
 };
 
 export default ChatbotPage;
-
-
-
-
