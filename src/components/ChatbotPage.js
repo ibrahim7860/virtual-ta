@@ -31,7 +31,7 @@ const ChatbotPage = () => {
   const [loadingHistory, setloadingHistory] = useState(true);
   const [canCreateNewChat, setCanCreateNewChat] = useState(true);
   const [ratings, setRatings] = useState({});
-  const [chatTitle, setChatTitle] = useState("");
+  const [chatTitle, setChatTitle] = useState("Enter Title...");
 
   const messagesEndRef = useRef(null);
 
@@ -132,9 +132,7 @@ const ChatbotPage = () => {
     );
 
     setCurrentChatHistory((currentChatHistory) =>
-      currentChatHistory
-        .filter((msg) => !msg.isTyping)
-        .concat([{ ...responseMessage, id: responseMsgRef.id }])
+      currentChatHistory.concat([{ ...responseMessage, id: responseMsgRef.id }])
     );
   };
 
@@ -206,7 +204,7 @@ const ChatbotPage = () => {
     );
 
     setUserChatHistory(updatedUserChatHistory);
-    handleNewChatClick();
+    // handleNewChatClick();
   };
 
   const handleChatClick = async (chatNumber) => {
@@ -254,14 +252,14 @@ const ChatbotPage = () => {
     const nextIntValue = getNextInteger(userChatHistory);
     localStorage.setItem("nextInt", nextIntValue);
     localStorage.setItem("currentChatInt", nextIntValue);
-    setChatTitle("");
+    setChatTitle("Enter Title...");
 
     const documentID = `${auth.currentUser.email}-${nextIntValue}`;
 
     try {
       await setDoc(
         doc(db, "users", `${auth.currentUser.email}`, "chats", documentID),
-        { timestamp: serverTimestamp(), title: "" }
+        { timestamp: serverTimestamp(), title: "Enter Title..." }
       );
     } catch (error) {
       console.error("Error adding document:", error);
@@ -387,13 +385,9 @@ const ChatbotPage = () => {
               }}
             >
               <div>
-                {chatTitle === "" ? (
-                  <div
-                    onClick={() =>
-                      handleTitleClick(localStorage.getItem("currentChatInt"))
-                    }
-                  >
-                    Please enter a title for chat...
+                {chatTitle === "Enter Title..." ? (
+                  <div>
+                    Click Pencil Button on Sidebar For This Chat To Enter Title
                   </div>
                 ) : (
                   chatTitle
