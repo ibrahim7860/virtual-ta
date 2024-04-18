@@ -204,7 +204,7 @@ const ChatbotPage = () => {
     );
 
     setUserChatHistory(updatedUserChatHistory);
-    // handleNewChatClick();
+    handleNewChatClick();
   };
 
   const handleChatClick = async (chatNumber) => {
