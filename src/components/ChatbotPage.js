@@ -37,9 +37,11 @@ const ChatbotPage = () => {
 
   const scrollToBottom = () => {
     console.log("SCROLLING");
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 0);
   };
 
   const sendMessageToBackend = async (userMessage) => {
@@ -355,9 +357,6 @@ const ChatbotPage = () => {
   useEffect(() => {
     updateChatHistoryForCurrentChat();
     fetchUserHistory();
-  }, [currentChatHistory]);
-
-  useLayoutEffect(() => {
     scrollToBottom();
   }, [currentChatHistory]);
 
