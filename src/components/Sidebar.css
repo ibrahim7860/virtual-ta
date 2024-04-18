@@ -43,6 +43,7 @@
   cursor: pointer;
   transition: background-color 0.2s; /* Smooth transition for hover effect */
   color: white;
+  position: relative;
 }
 
 .chat-history-button:hover {
@@ -63,6 +64,9 @@
 .chat-history-sidebar {
   list-style: none;
   font-size: 22px;
+  padding-right: 50px; /* Adjust as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-new-chat button {
@@ -76,4 +80,21 @@
 
 .header-new-chat button:hover {
   color: #007bff;
+}
+
+.chat-rename-button {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  right: 30px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0.5rem auto auto;
+}
+
+.chat-rename-button:hover {
+  color: #000F;
 }

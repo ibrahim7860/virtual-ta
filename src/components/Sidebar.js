@@ -2,8 +2,7 @@ import React from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import renameIcon from "../images/rename.svg";
+import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 
 import "./Sidebar.css";
 
@@ -40,12 +39,12 @@ function Sidebar({
                     onClick={() => handleChatClick(chatNumber)}
                   >
                     <li className="chat-history-sidebar">{chat.title}</li>
-                    <div className="chat-rename-button">
+                    <div>
                       <button
                         className="chat-rename-button"
                         onClick={() => handleChatSidebarRename(chatNumber)}
                       >
-                        <img src={renameIcon} alt="Rename Icon" />
+                          <FontAwesomeIcon icon={faPencil} size="xl" />
                       </button>
                     </div>
                     <div className="chat-delete-button">

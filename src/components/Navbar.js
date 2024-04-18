@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
-import { FaHome, FaRegComments, FaSignInAlt, FaSignOutAlt, FaThumbsUp } from 'react-icons/fa';
+import { FaHome, FaComments, FaSignInAlt, FaSignOutAlt, FaThumbsUp } from 'react-icons/fa';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -28,7 +28,7 @@ const Navbar = () => {
             <h1 className="navbar-brand">VirtualTA</h1>
             <div className="navbar-links">
                 <Link to="/" className="nav-link"><FaHome size={30} /></Link>
-                <button className="nav-link" onClick={handleChatClick}><FaRegComments size={30} /></button>
+                <button className="nav-link" onClick={handleChatClick}><FaComments size={30} /></button>
                 <Link to="/feedback" className="nav-link"><FaThumbsUp size={30} /></Link>
                 {!currentUser ? (
                     <Link to="/sign-in" className="nav-link"><FaSignInAlt size={30} /></Link>
