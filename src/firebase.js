@@ -15,9 +15,8 @@ const firebaseConfig = {
   storageBucket: "",
   messagingSenderId: "",
   appId: "",
-  measurementId: "",
+  measurementId: ""
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);

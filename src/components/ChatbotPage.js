@@ -139,17 +139,22 @@ const ChatbotPage = () => {
         return;
     }
 
+    // Get the current rating from state
+    const currentRating = ratings[messageId];
+
+    // Toggle the rating: if the same button is clicked, remove the rating; otherwise, update it
+    const updatedRating = currentRating === newRating ? "none" : newRating;
+
     const messageRef = doc(db, "users", auth.currentUser.email, "chats", `${auth.currentUser.email}-${localStorage.getItem("currentChatInt")}`, "messages", messageId);
 
     try {
-        await setDoc(messageRef, { rating: newRating }, { merge: true });
-        setRatings(prev => ({ ...prev, [messageId]: newRating }));
+        await setDoc(messageRef, { rating: updatedRating }, { merge: true });
+        setRatings(prev => ({ ...prev, [messageId]: updatedRating }));
         console.log("Rating updated successfully");
     } catch (error) {
         console.error("Error updating rating: ", error);
     }
 };
-
 
 
 
@@ -328,10 +333,7 @@ const ChatbotPage = () => {
               <div>Chat - {localStorage.getItem("currentChatInt")}</div>
             </div>
             {currentChatHistory.map((msg, index) => (
-              <div
-                key={index}
-                className={`chat-message ${msg.sender === "user" ? "user" : "bot"}`}
-              >
+              <div key={index} className={`chat-message ${msg.sender === "user" ? "user" : "bot"}`}>
                 {msg.isTyping ? (
                   <TypingIndicator />
                 ) : msg.sender === "bot" ? (
@@ -342,13 +344,13 @@ const ChatbotPage = () => {
                         onClick={() => updateRating(msg.id, 'up')}
                         className={`rating-button ${ratings[msg.id] === 'up' ? 'active' : ''}`}
                         style={{ animation: ratings[msg.id] === 'up' ? 'buttonClickAnimation 0.5s' : 'none' }}>
-                        <FontAwesomeIcon icon={faThumbsUp} color="lightgrey" />
+                        <FontAwesomeIcon icon={faThumbsUp} color={ratings[msg.id] === 'up' ? 'black' : 'lightgrey'} />
                       </button>
                       <button
                         onClick={() => updateRating(msg.id, 'down')}
                         className={`rating-button ${ratings[msg.id] === 'down' ? 'active' : ''}`}
                         style={{ animation: ratings[msg.id] === 'down' ? 'buttonClickAnimation 0.5s' : 'none' }}>
-                        <FontAwesomeIcon icon={faThumbsDown} color="lightgrey" />
+                        <FontAwesomeIcon icon={faThumbsDown} color={ratings[msg.id] === 'down' ? 'black' : 'lightgrey'} />
                       </button>
                     </div>
                   </>
