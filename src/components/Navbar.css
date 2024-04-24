@@ -12,7 +12,10 @@
 }
 
 .navbar-brand {
-    font-size: 3em;
+    font-family: "Jersey 25", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 3.5em;
     color: #333;
     margin: 0;
 }
