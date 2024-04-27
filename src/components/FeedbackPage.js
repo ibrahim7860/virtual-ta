@@ -10,7 +10,7 @@ const FeedbackPage = () => {
 
     const handleRatingChange = (event) => {
         const newRating = event.target.value;
-        setRating(newRating); // Update the state with the new rating
+        setRating(newRating);
         console.log(newRating);
     };
 

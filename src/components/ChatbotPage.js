@@ -105,7 +105,7 @@ const ChatbotPage = () => {
       sender: "bot",
       timestamp: serverTimestamp(),
       rating: "none",
-      id: "", // Placeholder, will be replaced by actual document ID
+      id: "",
     };
 
     await addDoc(
@@ -142,10 +142,8 @@ const ChatbotPage = () => {
       return;
     }
 
-    // Get the current rating from state
     const currentRating = ratings[messageId];
 
-    // Toggle the rating: if the same button is clicked, remove the rating; otherwise, update it
     const updatedRating = currentRating === newRating ? "none" : newRating;
 
     const messageRef = doc(
@@ -191,7 +189,6 @@ const ChatbotPage = () => {
         `${auth.currentUser.email}-${chatNumber}`
       );
 
-      // Delete the document
       await deleteDoc(docRef);
 
       console.log("Chat document deleted successfully");
@@ -210,7 +207,6 @@ const ChatbotPage = () => {
   const handleChatClick = async (chatNumber) => {
     updateChatHistoryForCurrentChat();
 
-    // Define the base query for the chat
     const baseQuery = doc(
       db,
       "users",
@@ -232,13 +228,12 @@ const ChatbotPage = () => {
       console.error("Error getting document:", error);
     }
 
-    // Create the query for the chat's messages
     const q = query(
       collection(baseQuery, "messages"),
       orderBy("timestamp", "asc")
     );
 
-    const querySnapshot = await getDocs(q); // Retrieve one-time snapshot of documents
+    const querySnapshot = await getDocs(q);
     const messagesForChat = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -273,7 +268,7 @@ const ChatbotPage = () => {
       orderBy("timestamp", "asc")
     );
 
-    const querySnapshot = await getDocs(q); // Retrieve one-time snapshot of documents
+    const querySnapshot = await getDocs(q);
     const allChatsForUser = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -281,12 +276,10 @@ const ChatbotPage = () => {
     setUserChatHistory(allChatsForUser);
   };
 
-  //When user history fetched and loaded into state array, set loadingHistory to false
   useEffect(() => {
     setloadingHistory(false);
   }, [userChatHistory]);
 
-  //When user loads page, fetch user history - loadingHistory is true when component loads
   useEffect(() => {
     if (auth.currentUser) {
       if (loadingHistory) {
@@ -295,7 +288,6 @@ const ChatbotPage = () => {
     }
   }, []);
 
-  //When loadingHistory changes, if loadingHistory is false, then create a new chat
   useEffect(() => {
     if (!loadingHistory && canCreateNewChat) {
       createNewChat(userChatHistory);
