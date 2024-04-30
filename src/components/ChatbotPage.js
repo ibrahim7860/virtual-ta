@@ -31,6 +31,7 @@ const ChatbotPage = () => {
   const [canCreateNewChat, setCanCreateNewChat] = useState(true);
   const [ratings, setRatings] = useState({});
   const [chatTitle, setChatTitle] = useState("Enter Title...");
+  const [chatbotResponseLoading, setChatbotResponseLoading] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -77,19 +78,8 @@ const ChatbotPage = () => {
       timestamp: serverTimestamp(),
     };
 
-    const typingMessage = {
-      text: "...",
-      sender: "bot",
-      timestamp: serverTimestamp(),
-      isTyping: true,
-    };
-
     setMessage("Loading response...");
-    // setCurrentChatHistory((currentChatHistory) => [
-    //   ...currentChatHistory,
-    //   userMessage,
-    // ]);
-
+    setChatbotResponseLoading(true);
     const backendResponseText = await sendMessageToBackend(message);
     console.log("Backend response text to be added:", backendResponseText);
 
@@ -128,6 +118,7 @@ const ChatbotPage = () => {
       currentChatHistory.concat(userMessage, responseMessage)
     );
     setMessage("");
+    setChatbotResponseLoading(false);
   };
 
   const updateRating = async (messageId, newRating) => {
@@ -358,6 +349,7 @@ const ChatbotPage = () => {
         handleNewChatClick={handleNewChatClick}
         handleChatDelete={handleChatDelete}
         handleChatSidebarRename={handleChatSidebarRename}
+        chatResponseLoading={chatbotResponseLoading}
       />
       {!loadingHistory ? (
         <div className="chat-container">
@@ -444,6 +436,7 @@ const ChatbotPage = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              disabled={chatbotResponseLoading}
             />
             <button
               onClick={sendMessage}
