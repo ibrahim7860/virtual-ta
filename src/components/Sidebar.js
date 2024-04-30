@@ -33,39 +33,42 @@ function Sidebar({
           <div>Loading...</div>
         ) : (
           <ul style={{ paddingLeft: 0 }}>
-            {chats.map((chat, index) => {
-              const chatNumber = chat.id.split("-")[1];
-              return (
-                <>
-                  <button
-                    key={index}
-                    className="chat-history-button"
-                    onClick={() => handleChatClick(chatNumber)}
-                    disabled={chatResponseLoading}
-                  >
-                    <li className="chat-history-sidebar">{chat.title}</li>
-                    <div>
-                      <button
-                        className="chat-rename-button"
-                        onClick={() => handleChatSidebarRename(chatNumber)}
-                        disabled={chatResponseLoading}
-                      >
-                        <FontAwesomeIcon icon={faPencil} size="xl" />
-                      </button>
-                    </div>
-                    <div className="chat-delete-button">
-                      <button
-                        className="chat-delete-button"
-                        onClick={() => handleChatDelete(chatNumber)}
-                        disabled={chatResponseLoading}
-                      >
-                        <FontAwesomeIcon icon={faTrash} size="xl" />
-                      </button>
-                    </div>
-                  </button>
-                </>
-              );
-            })}
+            {chats
+              .slice()
+              .reverse()
+              .map((chat, index) => {
+                const chatNumber = chat.id.split("-")[1];
+                return (
+                  <>
+                    <button
+                      key={index}
+                      className="chat-history-button"
+                      onClick={() => handleChatClick(chatNumber)}
+                      disabled={chatResponseLoading}
+                    >
+                      <li className="chat-history-sidebar">{chat.title}</li>
+                      <div>
+                        <button
+                          className="chat-rename-button"
+                          onClick={() => handleChatSidebarRename(chatNumber)}
+                          disabled={chatResponseLoading}
+                        >
+                          <FontAwesomeIcon icon={faPencil} size="xl" />
+                        </button>
+                      </div>
+                      <div className="chat-delete-button">
+                        <button
+                          className="chat-delete-button"
+                          onClick={() => handleChatDelete(chatNumber)}
+                          disabled={chatResponseLoading}
+                        >
+                          <FontAwesomeIcon icon={faTrash} size="xl" />
+                        </button>
+                      </div>
+                    </button>
+                  </>
+                );
+              })}
           </ul>
         )}
       </div>
