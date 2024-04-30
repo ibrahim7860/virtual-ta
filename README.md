@@ -58,7 +58,5 @@ The VirtualTA frontend was built using ReactJS, a JavaScript library for buildin
 ## Backend
 The VirtualTA backend was built using Python with Flask, a micro web framework. It utilizes the Google Gemini API for chatbot responses, and stores user information, chats, and carries out user authentications via Firebase.
 
-## Demo
-
-
-## Link to Slide Deck
+## Slide
+<img width="652" alt="Screenshot 2024-04-30 at 11 47 50 AM" src="https://github.com/ibrahim7860/virtual-ta/assets/76620497/7c08a9c3-8df2-456f-aec3-6501cade6ed7">
