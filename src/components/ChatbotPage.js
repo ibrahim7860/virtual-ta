@@ -90,15 +90,14 @@ const ChatbotPage = () => {
     setCurrentChatHistory((currentChatHistory) => [
       ...currentChatHistory,
       userMessage,
-      typingMessage,
     ]);
 
     const backendResponseText = await sendMessageToBackend(message);
     console.log("Backend response text to be added:", backendResponseText);
 
-    setCurrentChatHistory((currentChatHistory) =>
-      currentChatHistory.filter((msg) => !msg.isTyping)
-    );
+    // setCurrentChatHistory((currentChatHistory) =>
+    //   currentChatHistory.filter((msg) => !msg.isTyping)
+    // );
 
     const responseMessage = {
       text: backendResponseText,
