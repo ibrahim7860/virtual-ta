@@ -21,7 +21,6 @@ import {
   faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
 import "./ChatbotPage.css";
-import TypingIndicator from "./TypingIndicator";
 import ReactMarkdown from "react-markdown";
 
 const ChatbotPage = () => {
@@ -36,7 +35,6 @@ const ChatbotPage = () => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    console.log("SCROLLING");
     setTimeout(() => {
       if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -86,25 +84,20 @@ const ChatbotPage = () => {
       isTyping: true,
     };
 
-    setMessage("");
-    setCurrentChatHistory((currentChatHistory) => [
-      ...currentChatHistory,
-      userMessage,
-    ]);
+    setMessage("Loading response...");
+    // setCurrentChatHistory((currentChatHistory) => [
+    //   ...currentChatHistory,
+    //   userMessage,
+    // ]);
 
     const backendResponseText = await sendMessageToBackend(message);
     console.log("Backend response text to be added:", backendResponseText);
-
-    // setCurrentChatHistory((currentChatHistory) =>
-    //   currentChatHistory.filter((msg) => !msg.isTyping)
-    // );
 
     const responseMessage = {
       text: backendResponseText,
       sender: "bot",
       timestamp: serverTimestamp(),
       rating: "none",
-      id: "",
     };
 
     await addDoc(
@@ -118,7 +111,8 @@ const ChatbotPage = () => {
       ),
       userMessage
     );
-    const responseMsgRef = await addDoc(
+
+    await addDoc(
       collection(
         db,
         "users",
@@ -131,8 +125,9 @@ const ChatbotPage = () => {
     );
 
     setCurrentChatHistory((currentChatHistory) =>
-      currentChatHistory.concat([{ ...responseMessage, id: responseMsgRef.id }])
+      currentChatHistory.concat(userMessage, responseMessage)
     );
+    setMessage("");
   };
 
   const updateRating = async (messageId, newRating) => {
@@ -392,9 +387,7 @@ const ChatbotPage = () => {
                   msg.sender === "user" ? "user" : "bot"
                 }`}
               >
-                {msg.isTyping ? (
-                  <TypingIndicator />
-                ) : msg.sender === "bot" ? (
+                {msg.sender === "bot" ? (
                   <>
                     <ReactMarkdown>{msg.text}</ReactMarkdown>
                     <div style={{ display: "flex", justifyContent: "left" }}>
