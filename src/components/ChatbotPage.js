@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { db, auth } from "../firebase";
 import Sidebar from "./Sidebar";
 import {
