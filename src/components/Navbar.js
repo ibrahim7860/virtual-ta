@@ -14,12 +14,17 @@ const Navbar = () => {
     };
 
     const handleChatClick = () => {
-        if (!currentUser) {
-            alert("Please sign in to access the chat page");
-            navigate('/sign-in');
+        if (currentUser) {
+            if (currentUser.emailVerified) {
+                navigate('/chat-page');
+            }
+            else {
+                alert("Please verify your email to access the chat page");
+            }
         }
         else {
-            navigate('/chat-page');
+            alert("Please sign in to access the chat page");
+            navigate('/sign-in');
         }
     }
 
