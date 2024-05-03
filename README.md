@@ -6,7 +6,12 @@
 <h2 align="center">Virtual-TA is a chatbot designed by students for students to answer coding questions students may have in a chatroom format.</h3>
 
 ## Demo Video on How to Use VirtualTA After Installation (For installation -- see video and instructions below for details)
-https://github.com/ibrahim7860/virtual-ta/blob/0f5fb5ae41589d648cad9c6bd1338cd217184cf7/demos/Virtual_TA_Demo.mp4
+Part 1:
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/4ed2fc84-1cec-4c95-ad8b-f37fc9de367a
+Part 2:
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/8b4e83bf-9e4a-4b55-baa2-ed4efd8d4084
+
+
 
 ## Demo Video for Installation Instructions
 https://github.com/ibrahim7860/virtual-ta/assets/93676578/de987268-084b-4e2d-9178-72d9a7c3ecfc
