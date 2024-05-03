@@ -5,27 +5,6 @@
 <h1 align="center">Virtual-TA - A Chatbot for Coding Questions</h1>
 <h2 align="center">Virtual-TA is a chatbot designed by students for students to answer coding questions students may have in a chatroom format.</h3>
 
-## Demo Video on How to Use VirtualTA After Installation (For installation -- see video and instructions below for details)
-Part 1:
-
-
-https://github.com/ibrahim7860/virtual-ta/assets/93676578/46ab13c4-fdb9-4488-af1e-9424ccc7fb80
-
-
-
-Part 2:
-
-
-
-https://github.com/ibrahim7860/virtual-ta/assets/93676578/4d694258-df2b-46e8-b3e4-af64db066dbe
-
-
-
-## Demo Video for Installation Instructions
-https://github.com/ibrahim7860/virtual-ta/assets/93676578/de987268-084b-4e2d-9178-72d9a7c3ecfc
-
-
-
 ## Requirements
 To run Virtual-TA, you will need the following libraries:
 
@@ -72,6 +51,25 @@ Run the Flask app
 ```
 flask run
 ```
+
+## Demo Video on How to Use VirtualTA After Installation (For installation -- see video and instructions below for details)
+Part 1:
+
+
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/46ab13c4-fdb9-4488-af1e-9424ccc7fb80
+
+
+
+Part 2:
+
+
+
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/4d694258-df2b-46e8-b3e4-af64db066dbe
+
+
+
+## Demo Video for Installation Instructions
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/de987268-084b-4e2d-9178-72d9a7c3ecfc
 
 ## Frontend
 The VirtualTA frontend was built using ReactJS, a JavaScript library for building user interfaces, and styled using Vanilla CSS.
