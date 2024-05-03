@@ -7,9 +7,17 @@
 
 ## Demo Video on How to Use VirtualTA After Installation (For installation -- see video and instructions below for details)
 Part 1:
-https://github.com/ibrahim7860/virtual-ta/assets/93676578/4ed2fc84-1cec-4c95-ad8b-f37fc9de367a
+
+
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/46ab13c4-fdb9-4488-af1e-9424ccc7fb80
+
+
+
 Part 2:
-https://github.com/ibrahim7860/virtual-ta/assets/93676578/8b4e83bf-9e4a-4b55-baa2-ed4efd8d4084
+
+
+
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/4d694258-df2b-46e8-b3e4-af64db066dbe
 
 
 
