@@ -9,7 +9,8 @@
 https://github.com/ibrahim7860/virtual-ta/blob/0f5fb5ae41589d648cad9c6bd1338cd217184cf7/demos/Virtual_TA_Demo.mp4
 
 ## Demo Video for Installation Instructions
-https://github.com/ibrahim7860/virtual-ta/blob/0f5fb5ae41589d648cad9c6bd1338cd217184cf7/demos/Virtual_TA_Installation_Demo.mp4
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/de987268-084b-4e2d-9178-72d9a7c3ecfc
+
 
 
 ## Requirements
