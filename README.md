@@ -5,6 +5,11 @@
 <h1 align="center">Virtual-TA - A Chatbot for Coding Questions</h1>
 <h2 align="center">Virtual-TA is a chatbot designed by students for students to answer coding questions students may have in a chatroom format.</h3>
 
+## Demo Video for Installation Instructions
+https://github.com/ibrahim7860/virtual-ta/assets/93676578/bce68899-65f4-4294-ba4c-55bc8e126d91
+
+
+
 ## Requirements
 To run Virtual-TA, you will need the following libraries:
 
